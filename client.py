@@ -30,20 +30,37 @@ for i in range(len(df1)):
 
 # runner function for threads
 def thread_function(name):
-    global tasks
+    global tasks, result
     while True:
         if not tasks:
+            print("pos me duermo")
             time.sleep(10)
         else:
             task=tasks[0]
-            request=str(task[0:2])
-            request
-            
+            tasks.pop(0)
+            req=str(task[0:2])
         #envia el request sin el numero de orden
-
-        #recibe la respuesta
-        res=32
-        result[task[2][0]][task[2][1]]=res
+            print("enviando: ",req)
+            host = '192.168.2.15'
+            port = 80
+            BUFFER_SIZE = 2000 
+            MESSAGE =req
+            res=32
+            result[task[2][0]][task[2][1]]=res
+        '''
+        # connecting with server 
+            tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+            tcpClientA.connect((host, port))
+        # sending request to server
+            tcpClientA.send(b'[[1,2,3],[4,5,6]]')     
+        # waiting for response
+            response = tcpClientA.recv(BUFFER_SIZE)
+            print(response.decode("utf-8"))
+        # inserting response in result df
+            response=int(response)
+            result[task[2][0]][task[2][1]]=res
+        '''
+            
 
 if __name__ == "__main__":
 
