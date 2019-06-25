@@ -28,25 +28,24 @@ def thread_function(name):
         task=tasks[0]
         tasks.pop(0)
         lock.release()
-        req=str(task[0:2])
+        req=task[0:2]
         #envia el request sin el numero de orden
         print("T",name," enviando: ",req)
-        host = '172.20.10.4'
+        host = '10.174.238.224'
         port = 1234
         BUFFER_SIZE = 2000 
-            # result[task[2][0]][task[2][1]]=response
-           
-        # # connecting with server 
-        #     tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-        #     tcpClientA.connect((host, port))
-        # # sending request to server
-        #     tcpClientA.send(req.encode())     
-        # # waiting for response
-        #     response = tcpClientA.recv(BUFFER_SIZE)
-        #     print(response.decode("utf-8"))
-        # # inserting response in result df
-        #     response=int(response)
-        #     result[task[2][0]][task[2][1]]=response
+        # connecting with server 
+        tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+        tcpClientA.connect((host, port))
+        # sending request to server
+        tcpClientA.send(bytes(str(req), "utf-8"))     
+        # waiting for response
+        response=""
+        while response=="":
+            response = tcpClientA.recv(BUFFER_SIZE).decode('utf-8')
+        # inserting response in result df
+        print(response)
+        result[task[2][0]][task[2][1]]=response
 
         
             
@@ -69,8 +68,8 @@ if __name__ == "__main__":
         threads.append(x)
         x.start()
     for i in threads:
-        
         i.join()
+    result.to_csv("result.csv")
     
     
     # taks production
