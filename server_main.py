@@ -46,21 +46,22 @@ def thread_function(name):
     logging.info("Thread %s: finishing", name)
 
 if __name__ == "__main__":
-
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
                         datefmt="%H:%M:%S")
-
     # CREATE THREAD POOL 
     # with concurrent.futures.ThreadPoolExecutor(max_workers=number_of_threads) as executor:
     #     executor.map(thread_function, range(number_of_threads))
-
-    x = threading.Thread(target=thread_function, args=(1,))
-    x.start()
+    threads=[]
+    for i in range(number_of_threads):
+        x = threading.Thread(target=thread_function, args=(i,))
+        threads.append(x)
+        x.start()
+    
 
     # CREATE SOCKETS
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("10.174.238.224", 1234))
+    s.bind(("172.20.10.2", 1234))
     s.listen(5)
     print("Socket created")
 

@@ -31,7 +31,7 @@ def thread_function(name):
         req=task[0:2]
         #envia el request sin el numero de orden
         print("T",name," enviando: ",req)
-        host = '10.174.238.224'
+        host = '172.20.10.2'
         port = 1234
         BUFFER_SIZE = 2000 
         # connecting with server 
