@@ -3,6 +3,7 @@ import threading
 import argparse
 import socket
 import time
+import numpy as np
 from threading import Lock
 lock=Lock()
 
@@ -23,29 +24,35 @@ out=str(args["output"])
 # runner function for threads
 def thread_function(name):
     global tasks, result
-    while tasks:
+    while True:
         lock.acquire()
-        task=tasks[0]
-        tasks.pop(0)
+        try:
+            task=tasks[0]
+            tasks.pop(0)
+        except:
+            task=""
         lock.release()
-        req=task[0:2]
-        #envia el request sin el numero de orden
-        print("T",name," enviando: ",req)
-        host = '172.20.10.2'
-        port = 1234
-        BUFFER_SIZE = 2000 
-        # connecting with server 
-        tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
-        tcpClientA.connect((host, port))
-        # sending request to server
-        tcpClientA.send(bytes(str(req), "utf-8"))     
-        # waiting for response
-        response=""
-        while response=="":
-            response = tcpClientA.recv(BUFFER_SIZE).decode('utf-8')
-        # inserting response in result df
-        print(response)
-        result[task[2][0]][task[2][1]]=response
+        if task=="":
+            break
+        else:
+            # REQUEST WITHOUT THE INDEX
+            req=task[0:2]
+            print("T",name," enviando: ",req)
+            host = '192.168.0.20'
+            port = 1234
+            BUFFER_SIZE = 2000 
+            # CONNECTING TO SERVER
+            tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
+            tcpClientA.connect((host, port))
+            # SENDING REQUEST TO SERVER
+            tcpClientA.send(bytes(str(req), "utf-8"))     
+            # WAITING FOR RESPONSE
+            response=""
+            while response=="":
+                response = tcpClientA.recv(BUFFER_SIZE).decode('utf-8')
+            # INSERTING RESPONSE IN DF
+            print(response)
+            result.iloc[task[2][0]][task[2][1]]=response
 
         
             
@@ -54,13 +61,14 @@ if __name__ == "__main__":
     # dataframes initialization
     df1=pd.read_csv(m1+'.csv',header=None)
     df2=pd.read_csv(m2+'.csv',header=None)
-    result=pd.read_csv(out+'.csv',header=None)
+    result=df=pd.DataFrame(np.zeros(shape=(df1.shape[0],df1.shape[0])))
     tasks = []
 
     # create tasks
     for i in range(len(df1)):
         for j in range(len(df2)):
             tasks.append([list(df1.iloc[i]),list(df2[j]),[i,j]])
+    print(tasks)
     # threads initialization
     threads=[]
     for i in range(number_of_threads):
@@ -69,7 +77,7 @@ if __name__ == "__main__":
         x.start()
     for i in threads:
         i.join()
-    result.to_csv("result.csv")
+    result.to_csv(out+".csv")
     
     
     # taks production
