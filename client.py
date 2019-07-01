@@ -11,6 +11,8 @@ ap = argparse.ArgumentParser()
 ap.add_argument("-t", "--threads", required=True)
 ap.add_argument("-m1", "--matrix1", required=True)
 ap.add_argument("-m2", "--matrix2", required=True)
+ap.add_argument("-server", "--server", required=True)
+ap.add_argument("-port", "--port", required=True)
 ap.add_argument("-out", "--output", required=True)
 args = vars(ap.parse_args())
 
@@ -18,6 +20,8 @@ args = vars(ap.parse_args())
 number_of_threads = int(args["threads"])
 m1=str(args["matrix1"])
 m2=str(args["matrix2"])
+server=str(args["server"])
+port2=str(args["port"])
 out=str(args["output"])
 
 
@@ -38,8 +42,8 @@ def thread_function(name):
             # REQUEST WITHOUT THE INDEX
             req=task[0:2]
             print("T",name," enviando: ",req)
-            host = '192.168.0.20'
-            port = 1234
+            host = server
+            port = int(port2)
             BUFFER_SIZE = 2000 
             # CONNECTING TO SERVER
             tcpClientA = socket.socket(socket.AF_INET, socket.SOCK_STREAM) 
@@ -68,7 +72,6 @@ if __name__ == "__main__":
     for i in range(len(df1)):
         for j in range(len(df2)):
             tasks.append([list(df1.iloc[i]),list(df2[j]),[i,j]])
-    print(tasks)
     # threads initialization
     threads=[]
     for i in range(number_of_threads):
