@@ -6,21 +6,21 @@ Python server and client arquitecture using multithreading to handle matrix mult
 
 **a)** 1 thread on server - 3 threads on client 
 ##### Server
-`command`
+`python3 server.py -t 1`
 
 ##### Client
-`command`
+`python3 client.py -t 3 -m1 matriza -m2 matrizb -server [server ip] -port 1234 -out resultado`
 
 **b)** 3 threads on server - 3 threads on client 
 ##### Server
-`command`
+`python3 server.py -t 3`
 
 ##### Client
-`command`
+`python3 client.py -t 3 -m1 matriza -m2 matrizb -server [server ip] -port 1234 -out resultado`
 
 **c)** 3 threads on server - 1 thread on client 
 ##### Server
-`command`
+`python3 server.py -t 3`
 
 ##### Client
-`command`
+`python3 client.py -t 1 -m1 matriza -m2 matrizb -server [server ip] -port 1234 -out resultado`

@@ -9,6 +9,7 @@ import socket
 from threading import Lock
 
 lock = Lock()
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-t", "--threads", required=True)
 args = vars(ap.parse_args())
@@ -19,7 +20,7 @@ tasks = []
 
 #Logging config
 logging.basicConfig(filename='server.log', filemode='w', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO) 
-logging.info('This will get logged to a file')
+logging.info('--- Starting Server ---')
 
 def thread_function(name):
     logging.info("Thread %s: starting", name)
@@ -44,10 +45,12 @@ def thread_function(name):
             # SEND RESULT THROUGH CONNECTION
             print(index,result)
             con.send(bytes(str(result), "utf-8"))
-            # CLOSE CONNECTION
+            # LOG OPERATION MADE 
+            logging.info("Thread %s: (%s, %s) = %s ", name, col, row, result)
+             # CLOSE CONNECTION
             con.close()
 
-    # logging.info("Thread %s: finishing", name)
+    logging.info("Thread %s: finishing", name)
 
 if __name__ == "__main__":
     format = "%(asctime)s: %(message)s"
@@ -62,7 +65,7 @@ if __name__ == "__main__":
 
     # CREATE SOCKET
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("192.168.0.20", 1234))
+    s.bind(("192.168.0.10", 1234))
     s.listen(5)
     print("Socket created")
 
@@ -79,8 +82,3 @@ if __name__ == "__main__":
         lock.acquire()
         tasks.append(data)
         lock.release()
-
-
-
-# socket.gethostname()
-    

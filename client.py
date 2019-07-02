@@ -5,6 +5,7 @@ import socket
 import time
 import numpy as np
 from threading import Lock
+
 lock=Lock()
 
 ap = argparse.ArgumentParser()
@@ -23,7 +24,6 @@ m2=str(args["matrix2"])
 server=str(args["server"])
 port2=str(args["port"])
 out=str(args["output"])
-
 
 # RUNNER FUNCTION 
 def thread_function(name):
@@ -59,8 +59,6 @@ def thread_function(name):
             result.iloc[task[2][0]][task[2][1]]=response
 
         
-            
-
 if __name__ == "__main__":
     # dataframes initialization
     df1=pd.read_csv(m1+'.csv',header=None)
