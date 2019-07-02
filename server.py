@@ -33,10 +33,12 @@ def thread_function(name):
         else:
             col = task[0]
             row = task[1]
-            con = task[2]
+            # THE INDEX OF THE ROW AND COLUMNS
+            index = task[2]
+            con = task[3]
             result = numpy.matmul(col, row)
             # SEND RESULT THROUGH CONNECTION
-            print(result)
+            print(index,result)
             con.send(bytes(str(result), "utf-8"))
             # CLOSE CONNECTION
             con.close()
@@ -61,15 +63,15 @@ if __name__ == "__main__":
     print("Socket created")
 
     while True:
-        #LISTENING         
+        # LISTENING         
         (clientsocket, (address,port)) = s.accept()
         print(f"Connection from {address} with {port}")
         data=clientsocket.recv(1024).decode("utf-8")
-        print("El cliente dice: ",data)
+        print("The client says: ",data)
         # clientsocket.close()
         data = ast.literal_eval(data)
         data.append(clientsocket)
-        #INSERTING TASKS
+        # INSERTING TASKS
         lock.acquire()
         tasks.append(data)
         lock.release()
