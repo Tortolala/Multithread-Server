@@ -4,21 +4,21 @@ Python server and client arquitecture using multithreading to handle matrix mult
 
 ### Tests
 
-# 1)
+**a)** 1 thread on server - 3 threads on client 
 ##### Server
 `command`
 
 ##### Client
 `command`
 
-# 2)
+**b)** 3 threads on server - 3 threads on client 
 ##### Server
 `command`
 
 ##### Client
 `command`
 
-# 3)
+**c)** 3 threads on server - 1 thread on client 
 ##### Server
 `command`
 

@@ -17,6 +17,10 @@ number_of_threads = int(args["threads"])
 # TASKS ARRAY
 tasks = []
 
+#Logging config
+logging.basicConfig(filename='server.log', filemode='w', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO) 
+logging.info('This will get logged to a file')
+
 def thread_function(name):
     logging.info("Thread %s: starting", name)
     global tasks
@@ -76,4 +80,7 @@ if __name__ == "__main__":
         tasks.append(data)
         lock.release()
 
+
+
+# socket.gethostname()
     
