@@ -16,7 +16,7 @@ ap.add_argument("-port", "--port", required=True)
 ap.add_argument("-out", "--output", required=True)
 args = vars(ap.parse_args())
 
-#arguments 
+# CATCHING ARGUMENTS
 number_of_threads = int(args["threads"])
 m1=str(args["matrix1"])
 m2=str(args["matrix2"])
@@ -25,7 +25,7 @@ port2=str(args["port"])
 out=str(args["output"])
 
 
-# runner function for threads
+# RUNNER FUNCTION 
 def thread_function(name):
     global tasks, result
     while True:
@@ -39,9 +39,9 @@ def thread_function(name):
         if task=="":
             break
         else:
-            # REQUEST WITHOUT THE INDEX
-            req=task[0:2]
-            print("T",name," enviando: ",req)
+            # REQUEST WITH THE INDEX
+            req=task
+            print("T",name," sending: ",req)
             host = server
             port = int(port2)
             BUFFER_SIZE = 2000 
@@ -68,11 +68,11 @@ if __name__ == "__main__":
     result=df=pd.DataFrame(np.zeros(shape=(df1.shape[0],df1.shape[0])))
     tasks = []
 
-    # create tasks
+    # TASK CREATION
     for i in range(len(df1)):
         for j in range(len(df2)):
             tasks.append([list(df1.iloc[i]),list(df2[j]),[i,j]])
-    # threads initialization
+    # THREADS INITIALIZATION
     threads=[]
     for i in range(number_of_threads):
         x = threading.Thread(target=thread_function, args=(i,))
@@ -83,7 +83,6 @@ if __name__ == "__main__":
     result.to_csv(out+".csv")
     
     
-    # taks production
 
 
     
