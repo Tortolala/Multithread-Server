@@ -17,6 +17,9 @@ number_of_threads = int(args["threads"])
 #prueba
 tasks = []
 
+logging.basicConfig(filename='app.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.warning('This will get logged to a file')
+
 def thread_function(name):
     logging.info("Thread %s: starting", name)
     # time.sleep(2)
@@ -82,5 +85,3 @@ if __name__ == "__main__":
         tasks.append(data)
         lock.release()
         # print("Data 3: ", tasks)
-
-    
